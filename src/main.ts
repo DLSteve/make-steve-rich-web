@@ -2,9 +2,9 @@ import './style.css';
 
 // ── Rotating Earth dot-cloud animation ──────────────────────────────────────
 
-const TARGET_LAND_DOTS = 15000;
+const TARGET_LAND_DOTS = 25000;
 const ROTATION_SPEED = 0.0015;
-const TILT_X = 0.38;
+const TILT_X = 0.20;
 const MAX_EVENTS = 5;
 const EVENT_INTERVAL_MS = 2200;
 
@@ -40,6 +40,52 @@ function rotX(x: number, y: number, z: number, a: number): [number, number, numb
   const c = Math.cos(a), s = Math.sin(a);
   return [x, y * c - z * s, y * s + z * c];
 }
+
+// Graticule (lat/lng) lines on the globe — pre-computed unit-sphere points with tilt baked in
+interface GraticuleLine {
+  points: Float32Array;
+  closed: boolean;
+}
+
+const graticules: GraticuleLine[] = [];
+
+(function buildGraticules(): void {
+  const segments = 96;
+
+  // Parallels — every 30°, closed loops around the globe (skip poles)
+  for (let latDeg = -60; latDeg <= 60; latDeg += 30) {
+    const lat = latDeg * Math.PI / 180;
+    const points = new Float32Array(segments * 3);
+    for (let i = 0; i < segments; i++) {
+      const lng = (i / segments) * Math.PI * 2;
+      const x = Math.cos(lat) * Math.cos(lng);
+      const y = Math.sin(lat);
+      const z = Math.cos(lat) * Math.sin(lng);
+      const [tx, ty, tz] = rotX(x, y, z, TILT_X);
+      points[i * 3]     = tx;
+      points[i * 3 + 1] = ty;
+      points[i * 3 + 2] = tz;
+    }
+    graticules.push({ points, closed: true });
+  }
+
+  // Meridians — every 30°, open arcs from south to north pole
+  for (let lngDeg = 0; lngDeg < 360; lngDeg += 30) {
+    const lng = lngDeg * Math.PI / 180;
+    const points = new Float32Array(segments * 3);
+    for (let i = 0; i < segments; i++) {
+      const lat = -Math.PI / 2 + (i / (segments - 1)) * Math.PI;
+      const x = Math.cos(lat) * Math.cos(lng);
+      const y = Math.sin(lat);
+      const z = Math.cos(lat) * Math.sin(lng);
+      const [tx, ty, tz] = rotX(x, y, z, TILT_X);
+      points[i * 3]     = tx;
+      points[i * 3 + 1] = ty;
+      points[i * 3 + 2] = tz;
+    }
+    graticules.push({ points, closed: false });
+  }
+})();
 
 function isLand(r: number, g: number, b: number): boolean {
   const isBlueDominant = b > r + 15 && b > g + 5;
@@ -217,6 +263,29 @@ async function initHeroCanvas(): Promise<void> {
 
       ctx!.fillStyle = dotColor(rz, alpha * 0.75);
       ctx!.fillRect(sx - dotR, sy - dotR, dotR * 2, dotR * 2);
+    }
+
+    // Graticule lines — drawn over dots
+    ctx!.strokeStyle = 'rgba(5, 112, 222, 0.22)';
+    ctx!.lineWidth = 0.8;
+    for (const line of graticules) {
+      const n = line.points.length / 3;
+      const iterEnd = line.closed ? n : n - 1;
+      ctx!.beginPath();
+      let inPath = false;
+      for (let i = 0; i <= iterEnd; i++) {
+        const idx = (i % n) * 3;
+        const bx = line.points[idx];
+        const by = line.points[idx + 1];
+        const bz = line.points[idx + 2];
+        const [rx, ry, rz] = rotY(bx, by, bz, rotAngle);
+        if (rz < 0) { inPath = false; continue; }
+        const sx2 = cx + rx * radius;
+        const sy2 = cy - ry * radius;
+        if (!inPath) { ctx!.moveTo(sx2, sy2); inPath = true; }
+        else         { ctx!.lineTo(sx2, sy2); }
+      }
+      ctx!.stroke();
     }
 
     const visibleEvents: Array<{ ex: number; ey: number; e: SteveEvent; progress: number }> = [];
