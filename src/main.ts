@@ -100,7 +100,7 @@ let landDots: Float32Array = new Float32Array(0);
 
 async function loadAndProcessLandMask(): Promise<void> {
   const img = new Image();
-  img.src = `${import.meta.env.BASE_URL}world-mask.jpg`;
+  img.src = '/world-mask.jpg';
 
   await new Promise<void>((resolve, reject) => {
     img.onload = () => resolve();
