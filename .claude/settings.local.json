@@ -6,7 +6,9 @@
       "Bash(npx tailwindcss *)",
       "Bash(npm run *)",
       "Bash(curl -s http://localhost:5173)",
-      "WebFetch(domain:stripe.com)"
+      "WebFetch(domain:stripe.com)",
+      "Bash(curl -L -o /Users/sewell/Developer/Projects/make-steve-rich-web/public/world-mask.jpg \"https://upload.wikimedia.org/wikipedia/commons/c/cd/Land_ocean_ice_2048.jpg\" -w \"\\\\nHTTP_STATUS:%{http_code}\\\\nCONTENT_TYPE:%{content_type}\\\\nSIZE_DOWNLOAD:%{size_download}\\\\n\")",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/sewell/Developer/Projects/make-steve-rich-web/public/world-mask.jpg)"
     ]
   }
 }
