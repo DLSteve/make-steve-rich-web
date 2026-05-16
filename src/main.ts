@@ -60,7 +60,7 @@ const graticules: GraticuleLine[] = [];
       const lng = (i / segments) * Math.PI * 2;
       const x = Math.cos(lat) * Math.cos(lng);
       const y = Math.sin(lat);
-      const z = Math.cos(lat) * Math.sin(lng);
+      const z = -Math.cos(lat) * Math.sin(lng);
       const [tx, ty, tz] = rotX(x, y, z, TILT_X);
       points[i * 3]     = tx;
       points[i * 3 + 1] = ty;
@@ -77,7 +77,7 @@ const graticules: GraticuleLine[] = [];
       const lat = -Math.PI / 2 + (i / (segments - 1)) * Math.PI;
       const x = Math.cos(lat) * Math.cos(lng);
       const y = Math.sin(lat);
-      const z = Math.cos(lat) * Math.sin(lng);
+      const z = -Math.cos(lat) * Math.sin(lng);
       const [tx, ty, tz] = rotX(x, y, z, TILT_X);
       points[i * 3]     = tx;
       points[i * 3 + 1] = ty;
@@ -153,7 +153,7 @@ async function loadAndProcessLandMask(): Promise<void> {
 
     const cx = Math.cos(lat) * Math.cos(lng);
     const cy = Math.sin(lat);
-    const cz = Math.cos(lat) * Math.sin(lng);
+    const cz = -Math.cos(lat) * Math.sin(lng);
 
     const [tx, ty, tz] = rotX(cx, cy, cz, TILT_X);
     dots[kept * 3]     = tx;
@@ -210,7 +210,7 @@ function spawnEvent(now: number): void {
   const lng = city.lng * Math.PI / 180;
   const cx = Math.cos(lat) * Math.cos(lng);
   const cy = Math.sin(lat);
-  const cz = Math.cos(lat) * Math.sin(lng);
+  const cz = -Math.cos(lat) * Math.sin(lng);
   const [tx, ty, tz] = rotX(cx, cy, cz, TILT_X);
   events.push({
     tx, ty, tz,
