@@ -100,7 +100,7 @@ let landDots: Float32Array = new Float32Array(0);
 
 async function loadAndProcessLandMask(): Promise<void> {
   const img = new Image();
-  img.src = '/world-mask.jpg';
+  img.src = `${import.meta.env.BASE_URL}world-mask.jpg`;
 
   await new Promise<void>((resolve, reject) => {
     img.onload = () => resolve();
@@ -183,9 +183,10 @@ function dotColor(rz: number, alpha: number): string {
   if (cached !== undefined) return cached;
 
   const t = (rz + 1) / 2;
-  const r = Math.round(5   + (124 - 5)   * (1 - t));
-  const g = Math.round(112 + (92  - 112) * (1 - t));
-  const b = Math.round(222 + (252 - 222) * (1 - t));
+  // Front (#09B885 emerald) → back (#047857 deep emerald)
+  const r = Math.round(9   + (4   - 9)   * (1 - t));
+  const g = Math.round(184 + (120 - 184) * (1 - t));
+  const b = Math.round(133 + (87  - 133) * (1 - t));
   const result = `rgba(${r},${g},${b},${alpha.toFixed(2)})`;
   colorCache.set(key, result);
   return result;
@@ -228,6 +229,11 @@ async function initHeroCanvas(): Promise<void> {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
+  let isDarkMode = document.documentElement.classList.contains('dark');
+  window.addEventListener('themechange', (e: Event) => {
+    isDarkMode = (e as CustomEvent<{ isDark: boolean }>).detail.isDark;
+  });
+
   function resize(): void {
     const dpr = Math.min(window.devicePixelRatio, 2);
     canvas!.width  = canvas!.offsetWidth  * dpr;
@@ -266,7 +272,7 @@ async function initHeroCanvas(): Promise<void> {
     }
 
     // Graticule lines — drawn over dots
-    ctx!.strokeStyle = 'rgba(5, 112, 222, 0.22)';
+    ctx!.strokeStyle = isDarkMode ? 'rgba(5, 162, 222, 0.32)' : 'rgba(5, 112, 222, 0.22)';
     ctx!.lineWidth = 0.8;
     for (const line of graticules) {
       const n = line.points.length / 3;
@@ -297,21 +303,6 @@ async function initHeroCanvas(): Promise<void> {
       const ex = cx + rx * radius;
       const ey = cy - ry * radius;
       visibleEvents.push({ ex, ey, e, progress });
-    }
-
-    for (let a = 0; a < visibleEvents.length; a++) {
-      for (let b = a + 1; b < visibleEvents.length; b++) {
-        const { ex: ax, ey: ay } = visibleEvents[a];
-        const { ex: bx2, ey: by2 } = visibleEvents[b];
-        const mx = (ax + bx2) / 2;
-        const my = (ay + by2) / 2 - Math.hypot(bx2 - ax, by2 - ay) * 0.25;
-        ctx!.beginPath();
-        ctx!.moveTo(ax, ay);
-        ctx!.quadraticCurveTo(mx, my, bx2, by2);
-        ctx!.strokeStyle = 'rgba(255, 99, 71, 0.35)';
-        ctx!.lineWidth = 1;
-        ctx!.stroke();
-      }
     }
 
     for (const { ex, ey, e, progress } of visibleEvents) {
@@ -354,23 +345,27 @@ async function initHeroCanvas(): Promise<void> {
       const pillX = ex + 10;
       const pillY = ey - pillH / 2;
 
-      ctx!.fillStyle = `rgba(255,255,255,${labelAlpha * 0.92})`;
+      const pillBg = isDarkMode ? `rgba(22,41,64,${labelAlpha * 0.92})` : `rgba(255,255,255,${labelAlpha * 0.92})`;
+      const pillBorder = isDarkMode ? `rgba(5,112,222,${labelAlpha * 0.5})` : `rgba(5,112,222,${labelAlpha * 0.4})`;
+      const pillText = isDarkMode ? `rgba(226,232,240,${labelAlpha})` : `rgba(10,37,64,${labelAlpha})`;
+
+      ctx!.fillStyle = pillBg;
       ctx!.beginPath();
       (ctx as CanvasRenderingContext2D & { roundRect: (x: number, y: number, w: number, h: number, r: number) => void }).roundRect(pillX, pillY, pillW, pillH, 10);
       ctx!.fill();
 
-      ctx!.strokeStyle = `rgba(5,112,222,${labelAlpha * 0.4})`;
+      ctx!.strokeStyle = pillBorder;
       ctx!.lineWidth = 0.8;
       ctx!.stroke();
 
-      ctx!.fillStyle = `rgba(10,37,64,${labelAlpha})`;
+      ctx!.fillStyle = pillText;
       ctx!.fillText(label, pillX + padX, pillY + pillH / 2 + 4);
     }
 
     ctx!.globalCompositeOperation = 'source-over';
     const vig = ctx!.createRadialGradient(cx, cy, radius * 0.55, cx, cy, radius * 1.1);
-    vig.addColorStop(0, 'rgba(255,255,255,0)');
-    vig.addColorStop(1, 'rgba(255,255,255,0.92)');
+    vig.addColorStop(0, isDarkMode ? 'rgba(11, 25, 41, 0)' : 'rgba(255,255,255,0)');
+    vig.addColorStop(1, isDarkMode ? 'rgba(11, 25, 41, 0.92)' : 'rgba(255,255,255,0.92)');
     ctx!.fillStyle = vig;
     ctx!.fillRect(0, 0, cssW, cssH);
   }
@@ -465,7 +460,19 @@ function initSmoothScroll(): void {
   });
 }
 
+function initThemeToggle(): void {
+  const buttons = document.querySelectorAll<HTMLButtonElement>('#theme-toggle, #theme-toggle-mobile');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      window.dispatchEvent(new CustomEvent('themechange', { detail: { isDark } }));
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle();
   initHeroCanvas();
   initDonationTicker();
   initSmoothScroll();

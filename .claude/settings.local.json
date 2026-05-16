@@ -8,7 +8,16 @@
       "Bash(curl -s http://localhost:5173)",
       "WebFetch(domain:stripe.com)",
       "Bash(curl -L -o /Users/sewell/Developer/Projects/make-steve-rich-web/public/world-mask.jpg \"https://upload.wikimedia.org/wikipedia/commons/c/cd/Land_ocean_ice_2048.jpg\" -w \"\\\\nHTTP_STATUS:%{http_code}\\\\nCONTENT_TYPE:%{content_type}\\\\nSIZE_DOWNLOAD:%{size_download}\\\\n\")",
-      "Bash(sips -g pixelWidth -g pixelHeight /Users/sewell/Developer/Projects/make-steve-rich-web/public/world-mask.jpg)"
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/sewell/Developer/Projects/make-steve-rich-web/public/world-mask.jpg)",
+      "Bash(curl -s http://localhost:5173/src/style.css)",
+      "Bash(curl -s http://localhost:5173/@id/__x00__virtual:tailwindcss-config)",
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(kill 58877 58905 58890 58863)",
+      "Bash(mkdir -p /Users/sewell/Developer/Projects/make-steve-rich-web/public/steves)",
+      "Bash(curl -sL -w \"%{http_code} jobs.jpg\\\\n\" -o jobs.jpg \"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Steve_Jobs_Headshot_2010-CROP.jpg/256px-Steve_Jobs_Headshot_2010-CROP.jpg\")",
+      "Bash(curl -sL -w \"%{http_code} carell.jpg\\\\n\" -o carell.jpg \"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/SteveCarellApr10.jpg/256px-SteveCarellApr10.jpg\")",
+      "Bash(curl -sL -w \"%{http_code} irwin.jpg\\\\n\" -o irwin.jpg \"https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Steve_Irwin.jpg/256px-Steve_Irwin.jpg\")",
+      "Bash(curl -sL -w \"%{http_code} martin.jpg\\\\n\" -o martin.jpg \"https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Steve_Martin_2011_Shankbone.JPG/256px-Steve_Martin_2011_Shankbone.JPG\")"
     ]
   }
 }

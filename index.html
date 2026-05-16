@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Make Steve Rich Foundation — Because Every Steve Deserves More</title>
     <meta name="description" content="The Make Steve Rich Foundation is committed to ensuring no Steve goes underfunded. Join us in our mission to close the Steve Wealth Gap once and for all." />
+    <script>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = stored === 'dark' || (!stored && prefersDark);
+        if (isDark) document.documentElement.classList.add('dark');
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,12 +23,12 @@
       h1, h2, h3, .font-display { font-family: 'Slabo 27px', serif; }
     </style>
   </head>
-  <body class="bg-white text-[#0A2540] antialiased">
+  <body class="bg-white dark:bg-[#0B1929] text-[#0A2540] dark:text-[#E2E8F0] antialiased">
 
     <!-- ================================================================
          NAVIGATION
     ================================================================ -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-[#E3E8EF] shadow-sm">
+    <nav class="sticky top-0 z-50 bg-white dark:bg-[#0B1929] border-b border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 sm:h-20">
 
@@ -76,8 +84,9 @@
                 font-family="'Crimson Pro', Georgia, serif"
                 font-size="18"
                 font-weight="600"
-                fill="#0A2540"
+                fill="currentColor"
                 letter-spacing="0.5"
+                class="text-[#0A2540] dark:text-white"
               >MAKE STEVE RICH</text>
               <!-- "Foundation" in Source Sans 3 — small caps feel -->
               <text
@@ -94,24 +103,56 @@
 
           <!-- Nav links -->
           <div class="hidden md:flex items-center gap-8">
-            <a href="#cause" class="text-[#425466] hover:text-[#0A2540] text-sm font-medium tracking-wide transition-colors duration-200">The Cause</a>
-            <a href="#stories" class="text-[#425466] hover:text-[#0A2540] text-sm font-medium tracking-wide transition-colors duration-200">Success Stories</a>
-            <a href="#donate" class="text-[#425466] hover:text-[#0A2540] text-sm font-medium tracking-wide transition-colors duration-200">Donate</a>
+            <a href="#cause" class="text-[#425466] hover:text-[#0A2540] dark:text-[#94A3B8] dark:hover:text-[#E2E8F0] text-sm font-medium tracking-wide transition-colors duration-200">The Cause</a>
+            <a href="#stories" class="text-[#425466] hover:text-[#0A2540] dark:text-[#94A3B8] dark:hover:text-[#E2E8F0] text-sm font-medium tracking-wide transition-colors duration-200">Success Stories</a>
+            <a href="#donate" class="text-[#425466] hover:text-[#0A2540] dark:text-[#94A3B8] dark:hover:text-[#E2E8F0] text-sm font-medium tracking-wide transition-colors duration-200">Donate</a>
+            <button
+              type="button"
+              id="theme-toggle"
+              aria-label="Toggle dark mode"
+              class="text-[#425466] hover:text-[#0A2540] dark:text-[#94A3B8] dark:hover:text-[#E2E8F0] transition-colors duration-200 p-2 rounded-full"
+            >
+              <!-- Sun icon (visible in dark mode → click to go light) -->
+              <svg class="hidden dark:block w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+              </svg>
+              <!-- Moon icon (visible in light mode → click to go dark) -->
+              <svg class="block dark:hidden w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </button>
             <a
               href="#donate"
-              class="bg-[#0A2540] hover:bg-[#1a3a5c] text-white font-bold text-sm px-5 py-2.5 rounded-full transition-all duration-200 hover:shadow-lg hover:-translate-y-px"
+              class="bg-[#0A2540] hover:bg-[#1a3a5c] dark:bg-[#0570DE] dark:hover:bg-[#0455b3] text-white font-bold text-sm px-5 py-2.5 rounded-full transition-all duration-200 hover:shadow-lg hover:-translate-y-px"
             >
               Give Now
             </a>
           </div>
 
-          <!-- Mobile menu button -->
-          <a
-            href="#donate"
-            class="md:hidden bg-[#0A2540] hover:bg-[#1a3a5c] text-white font-bold text-xs px-4 py-2 rounded-full transition-colors duration-200"
-          >
-            Give Now
-          </a>
+          <!-- Mobile controls -->
+          <div class="md:hidden flex items-center gap-2">
+            <button
+              type="button"
+              id="theme-toggle-mobile"
+              aria-label="Toggle dark mode"
+              class="text-[#425466] hover:text-[#0A2540] dark:text-[#94A3B8] dark:hover:text-[#E2E8F0] transition-colors duration-200 p-2 rounded-full"
+            >
+              <svg class="hidden dark:block w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+              </svg>
+              <svg class="block dark:hidden w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </button>
+            <a
+              href="#donate"
+              class="bg-[#0A2540] hover:bg-[#1a3a5c] dark:bg-[#0570DE] dark:hover:bg-[#0455b3] text-white font-bold text-xs px-4 py-2 rounded-full transition-colors duration-200"
+            >
+              Give Now
+            </a>
+          </div>
 
         </div>
       </div>
@@ -121,7 +162,7 @@
     <!-- ================================================================
          HERO
     ================================================================ -->
-    <section class="relative bg-white overflow-hidden">
+    <section class="relative bg-white dark:bg-[#0B1929] overflow-hidden">
       <canvas
         id="hero-canvas"
         aria-hidden="true"
@@ -130,20 +171,20 @@
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36 text-center">
         <!-- Eyebrow -->
-        <p class="inline-block text-[#0570DE] text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase mb-6 border border-[#E3E8EF] bg-white rounded-full px-4 py-1.5">
+        <p class="inline-block text-[#0570DE] text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase mb-6 border border-[#E3E8EF] dark:border-[#2A3A52] bg-white dark:bg-[#162940] rounded-full px-4 py-1.5">
           Established 2019 &bull; 501(c)3 Non-Profit*
         </p>
 
         <!-- Frosted text container -->
-        <div class="max-w-4xl mx-auto backdrop-blur-sm bg-white/60 ring-1 ring-white/40 shadow-[0_8px_32px_-12px_rgba(10,37,64,0.12)] rounded-3xl px-6 sm:px-12 py-8 sm:py-10 mb-10">
+        <div class="max-w-4xl mx-auto backdrop-blur-sm bg-white/60 dark:bg-[#0B1929]/60 ring-1 ring-white/40 dark:ring-white/10 shadow-[0_8px_32px_-12px_rgba(10,37,64,0.12)] rounded-3xl px-6 sm:px-12 py-8 sm:py-10 mb-10">
           <!-- Headline -->
-          <h1 class="font-display font-black text-[#0A2540] text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] mb-6">
+          <h1 class="font-display font-black text-[#0A2540] dark:text-[#E2E8F0] text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] mb-6">
             No Steve Should Ever<br />
             <span class="text-[#0570DE] italic">Go Without.</span>
           </h1>
 
           <!-- Subheadline -->
-          <p class="text-[#425466] text-lg sm:text-xl md:text-2xl leading-relaxed font-light">
+          <p class="text-[#425466] dark:text-[#94A3B8] text-lg sm:text-xl md:text-2xl leading-relaxed font-light">
             The Make Steve Rich Foundation is dedicated to closing the Steve Wealth Gap — ensuring that every individual named Steve has the financial resources they need to live, thrive, and frankly, flourish.
           </p>
 
@@ -152,24 +193,24 @@
             <a
               href="#donate"
               id="donate-now-btn"
-              class="w-full sm:w-auto bg-[#0A2540] hover:bg-[#1a3a5c] text-white font-bold text-base px-8 py-4 rounded-full transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[#0A2540]/30"
+              class="w-full sm:w-auto bg-[#0A2540] hover:bg-[#1a3a5c] dark:bg-[#0570DE] dark:hover:bg-[#0455b3] text-white font-bold text-base px-8 py-4 rounded-full transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[#0A2540]/30 dark:focus:ring-[#0570DE]/30"
             >
               Donate Now — Change a Steve's Life
             </a>
             <a
               href="#cause"
-              class="w-full sm:w-auto text-[#0A2540] border border-[#0A2540] hover:bg-[#0A2540] hover:text-white font-medium text-base px-8 py-4 rounded-full transition-all duration-200"
+              class="w-full sm:w-auto text-[#0A2540] dark:text-[#E2E8F0] border border-[#0A2540] dark:border-[#E2E8F0] hover:bg-[#0A2540] hover:text-white dark:hover:bg-[#E2E8F0] dark:hover:text-[#0B1929] font-medium text-base px-8 py-4 rounded-full transition-all duration-200"
             >
               Learn About the Crisis
             </a>
           </div>
 
           <!-- Live donation ticker -->
-          <div class="inline-block bg-white border border-[#E3E8EF] shadow-sm rounded-2xl px-8 py-5">
-            <p class="text-[#8898AA] text-xs uppercase tracking-widest font-semibold mb-1">Total Donated to Steves</p>
+          <div class="inline-block bg-white dark:bg-[#162940] border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm rounded-2xl px-8 py-5">
+            <p class="text-[#8898AA] dark:text-[#64748B] text-xs uppercase tracking-widest font-semibold mb-1">Total Donated to Steves</p>
             <p
               id="donation-ticker"
-              class="font-display font-bold text-3xl sm:text-4xl text-[#0A2540] transition-all duration-500"
+              class="font-display font-bold text-3xl sm:text-4xl text-[#0A2540] dark:text-[#E2E8F0] transition-all duration-500"
               aria-live="polite"
               aria-label="Live donation total"
             >
@@ -186,24 +227,24 @@
     <!-- ================================================================
          IMPACT STATS BAND
     ================================================================ -->
-    <section class="bg-[#F6F9FC] border-t border-b border-[#E3E8EF]" aria-label="Foundation statistics">
+    <section class="bg-[#F6F9FC] dark:bg-[#0F1E33] border-t border-b border-[#E3E8EF] dark:border-[#2A3A52]" aria-label="Foundation statistics">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
             <p class="font-display font-black text-[#0570DE] text-3xl sm:text-4xl">1.4M+</p>
-            <p class="text-[#425466] text-sm sm:text-base font-medium mt-1">Steves in America</p>
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm sm:text-base font-medium mt-1">Steves in America</p>
           </div>
           <div>
             <p class="font-display font-black text-[#0570DE] text-3xl sm:text-4xl">1 in 3</p>
-            <p class="text-[#425466] text-sm sm:text-base font-medium mt-1">Steves Underbanked</p>
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm sm:text-base font-medium mt-1">Steves Underbanked</p>
           </div>
           <div>
             <p class="font-display font-black text-[#0570DE] text-3xl sm:text-4xl">$0</p>
-            <p class="text-[#425466] text-sm sm:text-base font-medium mt-1">Admin Fees (est.)</p>
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm sm:text-base font-medium mt-1">Admin Fees (est.)</p>
           </div>
           <div>
             <p class="font-display font-black text-[#0570DE] text-3xl sm:text-4xl">100%</p>
-            <p class="text-[#425466] text-sm sm:text-base font-medium mt-1">Goes to Steves</p>
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm sm:text-base font-medium mt-1">Goes to Steves</p>
           </div>
         </div>
       </div>
@@ -213,25 +254,25 @@
     <!-- ================================================================
          THE CAUSE
     ================================================================ -->
-    <section id="cause" class="bg-[#F6F9FC] py-20 sm:py-28">
+    <section id="cause" class="bg-[#F6F9FC] dark:bg-[#0F1E33] py-20 sm:py-28">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Section header -->
         <div class="text-center max-w-3xl mx-auto mb-16">
           <p class="text-[#0570DE] text-xs font-bold tracking-[0.2em] uppercase mb-3">The Steve Wealth Gap</p>
-          <h2 class="font-display font-bold text-[#0A2540] text-3xl sm:text-4xl lg:text-5xl mb-5 leading-tight">
+          <h2 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-3xl sm:text-4xl lg:text-5xl mb-5 leading-tight">
             The Crisis Is Real.<br />
             <span class="italic text-[#0570DE]">The Steves Cannot Wait.</span>
           </h2>
-          <p class="text-[#425466] text-base sm:text-lg leading-relaxed">
+          <p class="text-[#425466] dark:text-[#94A3B8] text-base sm:text-lg leading-relaxed">
             Recent independent studies — conducted exclusively by us — reveal a staggering disparity between the wealth of people named Steve and the wealth they clearly deserve. The data is unambiguous. The moral imperative is clear.
           </p>
         </div>
 
         <!-- Stats row -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-20">
-          <div class="bg-white rounded-2xl border border-[#E3E8EF] shadow-sm p-8 text-center hover:shadow-md transition-shadow duration-200">
-            <div class="w-14 h-14 bg-[#EEF5FF] rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+          <div class="bg-white dark:bg-[#162940] rounded-2xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm p-8 text-center hover:shadow-md transition-shadow duration-200">
+            <div class="w-14 h-14 bg-[#EEF5FF] dark:bg-[#0570DE]/10 rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0570DE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
@@ -240,36 +281,36 @@
               </svg>
             </div>
             <p class="font-display font-bold text-[#0570DE] text-4xl mb-2">73%</p>
-            <p class="text-[#425466] text-sm leading-relaxed">of Steves report feeling "financially unappreciated" at least once per fiscal quarter</p>
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed">of Steves report feeling "financially unappreciated" at least once per fiscal quarter</p>
           </div>
-          <div class="bg-white rounded-2xl border border-[#E3E8EF] shadow-sm p-8 text-center hover:shadow-md transition-shadow duration-200">
-            <div class="w-14 h-14 bg-[#EEF5FF] rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+          <div class="bg-white dark:bg-[#162940] rounded-2xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm p-8 text-center hover:shadow-md transition-shadow duration-200">
+            <div class="w-14 h-14 bg-[#EEF5FF] dark:bg-[#0570DE]/10 rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0570DE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="1" x2="12" y2="23"></line>
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
               </svg>
             </div>
             <p class="font-display font-bold text-[#0570DE] text-4xl mb-2">$48K</p>
-            <p class="text-[#425466] text-sm leading-relaxed">the estimated annual "Steve Gap" — how much each Steve falls short of their rightful financial potential</p>
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed">the estimated annual "Steve Gap" — how much each Steve falls short of their rightful financial potential</p>
           </div>
-          <div class="bg-white rounded-2xl border border-[#E3E8EF] shadow-sm p-8 text-center hover:shadow-md transition-shadow duration-200">
-            <div class="w-14 h-14 bg-[#EEF5FF] rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+          <div class="bg-white dark:bg-[#162940] rounded-2xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm p-8 text-center hover:shadow-md transition-shadow duration-200">
+            <div class="w-14 h-14 bg-[#EEF5FF] dark:bg-[#0570DE]/10 rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0570DE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
               </svg>
             </div>
             <p class="font-display font-bold text-[#0570DE] text-4xl mb-2">12K</p>
-            <p class="text-[#425466] text-sm leading-relaxed">new Steves enter financial precarity every year — many of them named Steve from birth, through no fault of their own</p>
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed">new Steves enter financial precarity every year — many of them named Steve from birth, through no fault of their own</p>
           </div>
         </div>
 
         <!-- Programs -->
         <div class="text-center max-w-2xl mx-auto mb-12">
           <p class="text-[#0570DE] text-xs font-bold tracking-[0.2em] uppercase mb-3">Our Programs</p>
-          <h2 class="font-display font-bold text-[#0A2540] text-3xl sm:text-4xl mb-4 leading-tight">
+          <h2 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-3xl sm:text-4xl mb-4 leading-tight">
             Targeted Interventions for Targeted Steves
           </h2>
-          <p class="text-[#425466] leading-relaxed">
+          <p class="text-[#425466] dark:text-[#94A3B8] leading-relaxed">
             We deploy capital strategically, surgically, and exclusively to individuals named Steve. Each dollar you give is a dollar that will touch a Steve.
           </p>
         </div>
@@ -277,62 +318,62 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
           <!-- Program card 1 -->
-          <article class="bg-white rounded-2xl border border-[#E3E8EF] shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+          <article class="bg-white dark:bg-[#162940] rounded-2xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div class="h-2 bg-[#0570DE]"></div>
             <div class="p-8">
-              <div class="w-12 h-12 bg-[#EEF5FF] rounded-xl flex items-center justify-center mb-5" aria-hidden="true">
+              <div class="w-12 h-12 bg-[#EEF5FF] dark:bg-[#0570DE]/10 rounded-xl flex items-center justify-center mb-5" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0570DE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                 </svg>
               </div>
-              <h3 class="font-display font-bold text-[#0A2540] text-xl mb-3">Steve Emergency Relief Fund</h3>
-              <p class="text-[#425466] text-sm leading-relaxed mb-5">
+              <h3 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-xl mb-3">Steve Emergency Relief Fund</h3>
+              <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed mb-5">
                 When a Steve faces a sudden, unexpected expense — a burst pipe, an uninvited veterinary bill, an impulse jet-ski purchase — the SERF deploys funds within 72 hours. No questions asked. Well, one question: "Is your name Steve?"
               </p>
-              <div class="border-t border-[#E3E8EF] pt-4">
-                <p class="text-xs text-[#8898AA] font-semibold uppercase tracking-wide mb-1">Average grant size</p>
+              <div class="border-t border-[#E3E8EF] dark:border-[#2A3A52] pt-4">
+                <p class="text-xs text-[#8898AA] dark:text-[#64748B] font-semibold uppercase tracking-wide mb-1">Average grant size</p>
                 <p class="font-display font-bold text-[#0570DE] text-lg">$3,200</p>
               </div>
             </div>
           </article>
 
           <!-- Program card 2 -->
-          <article class="bg-white rounded-2xl border border-[#E3E8EF] shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+          <article class="bg-white dark:bg-[#162940] rounded-2xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div class="h-2 bg-[#0570DE]"></div>
             <div class="p-8">
-              <div class="w-12 h-12 bg-[#EEF5FF] rounded-xl flex items-center justify-center mb-5" aria-hidden="true">
+              <div class="w-12 h-12 bg-[#EEF5FF] dark:bg-[#0570DE]/10 rounded-xl flex items-center justify-center mb-5" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0570DE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                   <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                 </svg>
               </div>
-              <h3 class="font-display font-bold text-[#0A2540] text-xl mb-3">Steve Scholarship Program</h3>
-              <p class="text-[#425466] text-sm leading-relaxed mb-5">
+              <h3 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-xl mb-3">Steve Scholarship Program</h3>
+              <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed mb-5">
                 Education is the great equalizer — unless you are a Steve, in which case you require a dedicated scholarship. Our annual SSP awards full tuition to academically promising Steves, prioritizing fields most likely to maximize Steve net worth.
               </p>
-              <div class="border-t border-[#E3E8EF] pt-4">
-                <p class="text-xs text-[#8898AA] font-semibold uppercase tracking-wide mb-1">Annual awards</p>
+              <div class="border-t border-[#E3E8EF] dark:border-[#2A3A52] pt-4">
+                <p class="text-xs text-[#8898AA] dark:text-[#64748B] font-semibold uppercase tracking-wide mb-1">Annual awards</p>
                 <p class="font-display font-bold text-[#0570DE] text-lg">$18,000 / Steve</p>
               </div>
             </div>
           </article>
 
           <!-- Program card 3 -->
-          <article class="bg-white rounded-2xl border border-[#E3E8EF] shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+          <article class="bg-white dark:bg-[#162940] rounded-2xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div class="h-2 bg-[#0570DE]"></div>
             <div class="p-8">
-              <div class="w-12 h-12 bg-[#EEF5FF] rounded-xl flex items-center justify-center mb-5" aria-hidden="true">
+              <div class="w-12 h-12 bg-[#EEF5FF] dark:bg-[#0570DE]/10 rounded-xl flex items-center justify-center mb-5" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0570DE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="12" y1="1" x2="12" y2="23"></line>
                   <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
               </div>
-              <h3 class="font-display font-bold text-[#0A2540] text-xl mb-3">Steve Seed Capital Initiative</h3>
-              <p class="text-[#425466] text-sm leading-relaxed mb-5">
+              <h3 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-xl mb-3">Steve Seed Capital Initiative</h3>
+              <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed mb-5">
                 The world is full of would-be visionaries named Steve — people whose brilliant ideas are stifled solely by lack of funding and the misfortune of not being named Elon. The SSCI provides pre-seed venture capital exclusively to Steve-founded startups.
               </p>
-              <div class="border-t border-[#E3E8EF] pt-4">
-                <p class="text-xs text-[#8898AA] font-semibold uppercase tracking-wide mb-1">Investment range</p>
+              <div class="border-t border-[#E3E8EF] dark:border-[#2A3A52] pt-4">
+                <p class="text-xs text-[#8898AA] dark:text-[#64748B] font-semibold uppercase tracking-wide mb-1">Investment range</p>
                 <p class="font-display font-bold text-[#0570DE] text-lg">$25K – $500K</p>
               </div>
             </div>
@@ -346,7 +387,7 @@
     <!-- ================================================================
          QUOTE PULL
     ================================================================ -->
-    <section class="bg-[#0A2540] py-16 sm:py-20" aria-label="Featured testimonial">
+    <section class="bg-[#0A2540] dark:bg-[#162940] py-16 sm:py-20" aria-label="Featured testimonial">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="text-[#09B885] text-6xl font-display leading-none mb-4" aria-hidden="true">&ldquo;</div>
         <blockquote class="font-display text-white italic text-xl sm:text-2xl md:text-3xl leading-relaxed mb-6">
@@ -360,16 +401,16 @@
     <!-- ================================================================
          SUCCESS STORIES
     ================================================================ -->
-    <section id="stories" class="bg-white py-20 sm:py-28">
+    <section id="stories" class="bg-white dark:bg-[#0B1929] py-20 sm:py-28">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="text-center max-w-3xl mx-auto mb-16">
           <p class="text-[#0570DE] text-xs font-bold tracking-[0.2em] uppercase mb-3">Case Studies</p>
-          <h2 class="font-display font-bold text-[#0A2540] text-3xl sm:text-4xl lg:text-5xl mb-5 leading-tight">
+          <h2 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-3xl sm:text-4xl lg:text-5xl mb-5 leading-tight">
             Steves Who Made It.<br />
             <span class="italic text-[#0570DE]">Thanks to You.</span>
           </h2>
-          <p class="text-[#425466] text-base sm:text-lg leading-relaxed">
+          <p class="text-[#425466] dark:text-[#94A3B8] text-base sm:text-lg leading-relaxed">
             The following are documented success stories from individuals who benefited from the quiet, dignified, and completely real generosity of the Make Steve Rich Foundation.
           </p>
         </div>
@@ -377,107 +418,97 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
           <!-- Steve Jobs -->
-          <article class="bg-white rounded-2xl p-8 border border-[#E3E8EF] hover:border-[#0570DE] hover:bg-[#F0F6FF] transition-all duration-300">
+          <article class="bg-white dark:bg-[#162940] rounded-2xl p-8 border border-[#E3E8EF] dark:border-[#2A3A52] hover:border-[#0570DE] hover:bg-[#F0F6FF] dark:hover:bg-[#1a3a5c] transition-all duration-300">
             <div class="flex items-center gap-4 mb-5">
-              <div class="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center text-2xl flex-shrink-0" role="img" aria-label="Steve Jobs">
-                💻
-              </div>
+              <img src="/steves/jobs.jpg" alt="Steve Jobs" class="w-14 h-14 rounded-full object-cover flex-shrink-0 ring-1 ring-[#E3E8EF] dark:ring-[#2A3A52]" loading="lazy" />
               <div>
-                <h3 class="font-display font-bold text-[#0A2540] text-lg leading-tight">Steve Jobs</h3>
+                <h3 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-lg leading-tight">Steve Jobs</h3>
                 <p class="text-[#0570DE] text-xs font-semibold uppercase tracking-wide">Co-Founder, Apple Inc.</p>
               </div>
             </div>
-            <p class="text-[#425466] text-sm leading-relaxed mb-5">
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed mb-5">
               In 1976, a young Steve Jobs approached the Foundation seeking a modest grant to purchase the components necessary for a personal computing prototype. The Foundation provided a discreet $1,400 disbursement. The rest, as they say, is the entire history of modern technology.
             </p>
-            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] text-sm">
+            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] dark:text-[#94A3B8] text-sm">
               "Think different — and always accept a grant from a well-funded charity."
-              <footer class="not-italic text-xs text-[#8898AA] mt-1 font-semibold">— Steve Jobs, definitely</footer>
+              <footer class="not-italic text-xs text-[#8898AA] dark:text-[#64748B] mt-1 font-semibold">— Steve Jobs, definitely</footer>
             </blockquote>
           </article>
 
           <!-- Steve Carell -->
-          <article class="bg-white rounded-2xl p-8 border border-[#E3E8EF] hover:border-[#0570DE] hover:bg-[#F0F6FF] transition-all duration-300">
+          <article class="bg-white dark:bg-[#162940] rounded-2xl p-8 border border-[#E3E8EF] dark:border-[#2A3A52] hover:border-[#0570DE] hover:bg-[#F0F6FF] dark:hover:bg-[#1a3a5c] transition-all duration-300">
             <div class="flex items-center gap-4 mb-5">
-              <div class="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center text-2xl flex-shrink-0" role="img" aria-label="Steve Carell">
-                🎭
-              </div>
+              <img src="/steves/carell.jpg" alt="Steve Carell" class="w-14 h-14 rounded-full object-cover flex-shrink-0 ring-1 ring-[#E3E8EF] dark:ring-[#2A3A52]" loading="lazy" />
               <div>
-                <h3 class="font-display font-bold text-[#0A2540] text-lg leading-tight">Steve Carell</h3>
+                <h3 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-lg leading-tight">Steve Carell</h3>
                 <p class="text-[#0570DE] text-xs font-semibold uppercase tracking-wide">Actor &amp; Comedian</p>
               </div>
             </div>
-            <p class="text-[#425466] text-sm leading-relaxed mb-5">
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed mb-5">
               Before The Office, before the Academy Award nominations, Steve Carell was simply a Steve with a dream — and an empty wallet. The Foundation's 1993 Comedy Workshop Grant covered six months of improv classes and one very important blazer purchase. His portrayal of Michael Scott was dedicated, spiritually, to us.
             </p>
-            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] text-sm">
+            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] dark:text-[#94A3B8] text-sm">
               "I'm not superstitious, but I am a little stitious about where my career would be without the grant."
-              <footer class="not-italic text-xs text-[#8898AA] mt-1 font-semibold">— Steve Carell, paraphrased</footer>
+              <footer class="not-italic text-xs text-[#8898AA] dark:text-[#64748B] mt-1 font-semibold">— Steve Carell, paraphrased</footer>
             </blockquote>
           </article>
 
           <!-- Steve Irwin -->
-          <article class="bg-white rounded-2xl p-8 border border-[#E3E8EF] hover:border-[#0570DE] hover:bg-[#F0F6FF] transition-all duration-300">
+          <article class="bg-white dark:bg-[#162940] rounded-2xl p-8 border border-[#E3E8EF] dark:border-[#2A3A52] hover:border-[#0570DE] hover:bg-[#F0F6FF] dark:hover:bg-[#1a3a5c] transition-all duration-300">
             <div class="flex items-center gap-4 mb-5">
-              <div class="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center text-2xl flex-shrink-0" role="img" aria-label="Steve Irwin">
-                🐊
-              </div>
+              <img src="/steves/irwin.jpg" alt="Steve Irwin" class="w-14 h-14 rounded-full object-cover flex-shrink-0 ring-1 ring-[#E3E8EF] dark:ring-[#2A3A52]" loading="lazy" />
               <div>
-                <h3 class="font-display font-bold text-[#0A2540] text-lg leading-tight">Steve Irwin</h3>
+                <h3 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-lg leading-tight">Steve Irwin</h3>
                 <p class="text-[#0570DE] text-xs font-semibold uppercase tracking-wide">The Crocodile Hunter</p>
               </div>
             </div>
-            <p class="text-[#425466] text-sm leading-relaxed mb-5">
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed mb-5">
               The Crocodile Hunter's first crocodile — a 3.2-metre saltwater specimen named Gerald — was made possible by a Foundation wildlife equipment grant in 1989. We also funded his first pair of khaki shorts, three rolls of industrial-grade duct tape, and an introductory course in liability law.
             </p>
-            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] text-sm">
+            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] dark:text-[#94A3B8] text-sm">
               "Crikey! What a bewdy of a foundation, mate. She's a beauty."
-              <footer class="not-italic text-xs text-[#8898AA] mt-1 font-semibold">— Steve Irwin, we choose to believe</footer>
+              <footer class="not-italic text-xs text-[#8898AA] dark:text-[#64748B] mt-1 font-semibold">— Steve Irwin, we choose to believe</footer>
             </blockquote>
           </article>
 
           <!-- Steve Martin -->
-          <article class="bg-white rounded-2xl p-8 border border-[#E3E8EF] hover:border-[#0570DE] hover:bg-[#F0F6FF] transition-all duration-300">
+          <article class="bg-white dark:bg-[#162940] rounded-2xl p-8 border border-[#E3E8EF] dark:border-[#2A3A52] hover:border-[#0570DE] hover:bg-[#F0F6FF] dark:hover:bg-[#1a3a5c] transition-all duration-300">
             <div class="flex items-center gap-4 mb-5">
-              <div class="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center text-2xl flex-shrink-0" role="img" aria-label="Steve Martin">
-                🪗
-              </div>
+              <img src="/steves/martin.jpg" alt="Steve Martin" class="w-14 h-14 rounded-full object-cover flex-shrink-0 ring-1 ring-[#E3E8EF] dark:ring-[#2A3A52]" loading="lazy" />
               <div>
-                <h3 class="font-display font-bold text-[#0A2540] text-lg leading-tight">Steve Martin</h3>
+                <h3 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-lg leading-tight">Steve Martin</h3>
                 <p class="text-[#0570DE] text-xs font-semibold uppercase tracking-wide">Comedian, Actor &amp; Musician</p>
               </div>
             </div>
-            <p class="text-[#425466] text-sm leading-relaxed mb-5">
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed mb-5">
               Before Steve Martin became America's favorite wild and crazy guy, he was simply a Steve in Waco, Texas with a borrowed banjo and no stage time. The Foundation's 1968 Performing Arts Advancement Grant funded four months of banjo lessons and secured his first paid stage performance — a 12-minute set that changed comedy forever.
             </p>
-            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] text-sm">
+            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] dark:text-[#94A3B8] text-sm">
               "Comedy is not pretty. But charitable giving? That's beautiful."
-              <footer class="not-italic text-xs text-[#8898AA] mt-1 font-semibold">— Steve Martin, in spirit</footer>
+              <footer class="not-italic text-xs text-[#8898AA] dark:text-[#64748B] mt-1 font-semibold">— Steve Martin, in spirit</footer>
             </blockquote>
           </article>
 
           <!-- Steve Harvey -->
-          <article class="bg-white rounded-2xl p-8 border border-[#E3E8EF] hover:border-[#0570DE] hover:bg-[#F0F6FF] transition-all duration-300">
+          <article class="bg-white dark:bg-[#162940] rounded-2xl p-8 border border-[#E3E8EF] dark:border-[#2A3A52] hover:border-[#0570DE] hover:bg-[#F0F6FF] dark:hover:bg-[#1a3a5c] transition-all duration-300">
             <div class="flex items-center gap-4 mb-5">
-              <div class="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center text-2xl flex-shrink-0" role="img" aria-label="Steve Harvey">
-                🎙️
-              </div>
+              <img src="/steves/harvey.jpg" alt="Steve Harvey" class="w-14 h-14 rounded-full object-cover flex-shrink-0 ring-1 ring-[#E3E8EF] dark:ring-[#2A3A52]" loading="lazy" />
               <div>
-                <h3 class="font-display font-bold text-[#0A2540] text-lg leading-tight">Steve Harvey</h3>
+                <h3 class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-lg leading-tight">Steve Harvey</h3>
                 <p class="text-[#0570DE] text-xs font-semibold uppercase tracking-wide">Host, Family Feud</p>
               </div>
             </div>
-            <p class="text-[#425466] text-sm leading-relaxed mb-5">
+            <p class="text-[#425466] dark:text-[#94A3B8] text-sm leading-relaxed mb-5">
               Long before the suits, the mustache, and the iconic misreading of Miss Universe results, Steve Harvey needed a suit. Our 2000 Sartorial Confidence Initiative provided a three-piece pinstripe ensemble and a full grooming stipend. The Foundation takes full credit for the mustache. You're welcome, America.
             </p>
-            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] text-sm">
+            <blockquote class="border-l-2 border-[#0570DE] pl-4 italic text-[#425466] dark:text-[#94A3B8] text-sm">
               "Survey says: the Make Steve Rich Foundation is number one."
-              <footer class="not-italic text-xs text-[#8898AA] mt-1 font-semibold">— Steve Harvey, hypothetically</footer>
+              <footer class="not-italic text-xs text-[#8898AA] dark:text-[#64748B] mt-1 font-semibold">— Steve Harvey, hypothetically</footer>
             </blockquote>
           </article>
 
           <!-- Generic Steve -->
-          <article class="bg-[#0A2540] rounded-2xl p-8 border border-[#1a3a5c] hover:border-[#09B885] transition-all duration-300 flex flex-col">
+          <article class="bg-[#0A2540] dark:bg-[#162940] rounded-2xl p-8 border border-[#1a3a5c] dark:border-[#2A3A52] hover:border-[#09B885] transition-all duration-300 flex flex-col">
             <div class="flex items-center gap-4 mb-5">
               <div class="w-14 h-14 bg-[#09B885]/20 rounded-full flex items-center justify-center text-2xl flex-shrink-0" role="img" aria-label="The next Steve">
                 ⭐
@@ -506,55 +537,55 @@
     <!-- ================================================================
          HOW IT WORKS
     ================================================================ -->
-    <section class="bg-[#F6F9FC] py-20 sm:py-24" aria-labelledby="how-it-works-heading">
+    <section class="bg-[#F6F9FC] dark:bg-[#0F1E33] py-20 sm:py-24" aria-labelledby="how-it-works-heading">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-14">
           <p class="text-[#0570DE] text-xs font-bold tracking-[0.2em] uppercase mb-3">Transparency</p>
-          <h2 id="how-it-works-heading" class="font-display font-bold text-[#0A2540] text-3xl sm:text-4xl mb-4 leading-tight">
+          <h2 id="how-it-works-heading" class="font-display font-bold text-[#0A2540] dark:text-[#E2E8F0] text-3xl sm:text-4xl mb-4 leading-tight">
             How Your Donation Works
           </h2>
-          <p class="text-[#425466] leading-relaxed">We are committed to radical transparency. Here is exactly where every dollar goes.</p>
+          <p class="text-[#425466] dark:text-[#94A3B8] leading-relaxed">We are committed to radical transparency. Here is exactly where every dollar goes.</p>
         </div>
 
         <div class="max-w-3xl mx-auto">
           <div class="space-y-4">
 
-            <div class="bg-white rounded-xl border border-[#E3E8EF] shadow-sm p-5 flex items-center gap-5">
+            <div class="bg-white dark:bg-[#162940] rounded-xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm p-5 flex items-center gap-5">
               <div class="flex-shrink-0 w-16 text-right">
                 <span class="font-display font-black text-[#09B885] text-2xl">97%</span>
               </div>
-              <div class="flex-grow bg-[#E3E8EF] rounded-full h-3 overflow-hidden">
+              <div class="flex-grow bg-[#E3E8EF] dark:bg-[#2A3A52] rounded-full h-3 overflow-hidden">
                 <div class="bg-[#09B885] h-3 rounded-full" style="width: 97%;" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" aria-label="97% to Steves"></div>
               </div>
               <div class="flex-shrink-0 w-48">
-                <p class="text-[#0A2540] font-semibold text-sm">Directly to Steves</p>
-                <p class="text-[#8898AA] text-xs">Cash, grants, suits</p>
+                <p class="text-[#0A2540] dark:text-[#E2E8F0] font-semibold text-sm">Directly to Steves</p>
+                <p class="text-[#8898AA] dark:text-[#64748B] text-xs">Cash, grants, suits</p>
               </div>
             </div>
 
-            <div class="bg-white rounded-xl border border-[#E3E8EF] shadow-sm p-5 flex items-center gap-5">
+            <div class="bg-white dark:bg-[#162940] rounded-xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm p-5 flex items-center gap-5">
               <div class="flex-shrink-0 w-16 text-right">
                 <span class="font-display font-black text-[#0570DE] text-2xl">2%</span>
               </div>
-              <div class="flex-grow bg-[#E3E8EF] rounded-full h-3 overflow-hidden">
+              <div class="flex-grow bg-[#E3E8EF] dark:bg-[#2A3A52] rounded-full h-3 overflow-hidden">
                 <div class="bg-[#0570DE] h-3 rounded-full" style="width: 2%;" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100" aria-label="2% operations"></div>
               </div>
               <div class="flex-shrink-0 w-48">
-                <p class="text-[#0A2540] font-semibold text-sm">Steve Verification</p>
-                <p class="text-[#8898AA] text-xs">Confirming Steveness</p>
+                <p class="text-[#0A2540] dark:text-[#E2E8F0] font-semibold text-sm">Steve Verification</p>
+                <p class="text-[#8898AA] dark:text-[#64748B] text-xs">Confirming Steveness</p>
               </div>
             </div>
 
-            <div class="bg-white rounded-xl border border-[#E3E8EF] shadow-sm p-5 flex items-center gap-5">
+            <div class="bg-white dark:bg-[#162940] rounded-xl border border-[#E3E8EF] dark:border-[#2A3A52] shadow-sm p-5 flex items-center gap-5">
               <div class="flex-shrink-0 w-16 text-right">
-                <span class="font-display font-black text-[#8898AA] text-2xl">1%</span>
+                <span class="font-display font-black text-[#8898AA] dark:text-[#64748B] text-2xl">1%</span>
               </div>
-              <div class="flex-grow bg-[#E3E8EF] rounded-full h-3 overflow-hidden">
-                <div class="bg-[#CBD5E1] h-3 rounded-full" style="width: 1%;" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" aria-label="1% miscellaneous"></div>
+              <div class="flex-grow bg-[#E3E8EF] dark:bg-[#2A3A52] rounded-full h-3 overflow-hidden">
+                <div class="bg-[#CBD5E1] dark:bg-[#2A3A52] h-3 rounded-full" style="width: 1%;" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" aria-label="1% miscellaneous"></div>
               </div>
               <div class="flex-shrink-0 w-48">
-                <p class="text-[#0A2540] font-semibold text-sm">Miscellaneous Steve Costs</p>
-                <p class="text-[#8898AA] text-xs">Bagels, mostly</p>
+                <p class="text-[#0A2540] dark:text-[#E2E8F0] font-semibold text-sm">Miscellaneous Steve Costs</p>
+                <p class="text-[#8898AA] dark:text-[#64748B] text-xs">Bagels, mostly</p>
               </div>
             </div>
 
@@ -567,7 +598,7 @@
     <!-- ================================================================
          CALL TO ACTION / DONATE
     ================================================================ -->
-    <section id="donate" class="bg-[#0A2540] py-20 sm:py-28 relative overflow-hidden">
+    <section id="donate" class="bg-[#0A2540] dark:bg-[#162940] py-20 sm:py-28 relative overflow-hidden">
       <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#09B885]/10 rounded-full blur-3xl"></div>
       </div>
@@ -602,7 +633,7 @@
           </button>
           <button
             type="button"
-            class="bg-[#0570DE] border border-[#0455b3] text-white font-bold text-lg py-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#0570DE] ring-2 ring-[#0570DE] ring-offset-2 ring-offset-[#0A2540]"
+            class="bg-[#0570DE] border border-[#0455b3] text-white font-bold text-lg py-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#0570DE] ring-2 ring-[#0570DE] ring-offset-2 ring-offset-[#0A2540] dark:ring-offset-[#162940]"
             aria-label="Donate $500 — most popular"
           >
             $500
@@ -637,7 +668,7 @@
     <!-- ================================================================
          FOOTER
     ================================================================ -->
-    <footer class="bg-[#0A2540] text-[#8898AA]" role="contentinfo">
+    <footer class="bg-[#0A2540] dark:bg-[#162940] text-[#8898AA]" role="contentinfo">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
 
@@ -668,7 +699,7 @@
               </svg>
               <span class="text-white font-display font-bold text-lg">Make Steve Rich Foundation</span>
             </div>
-            <p class="text-[#8898AA] text-sm leading-relaxed max-w-xs">
+            <p class="text-[#8898AA] dark:text-[#64748B] text-sm leading-relaxed max-w-xs">
               Closing the Steve Wealth Gap, one Steve at a time, since 2019. A beacon of hope for the name-specifically underprivileged.
             </p>
           </div>
@@ -698,7 +729,7 @@
         </div>
 
         <!-- Bottom bar -->
-        <div class="border-t border-[#1a3a5c] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="border-t border-[#1a3a5c] dark:border-[#2A3A52] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p class="text-xs text-[#425466]">
             &copy; 2026 The Make Steve Rich Foundation. All rights reserved. All Steves enriched.
           </p>
